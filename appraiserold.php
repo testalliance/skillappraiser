@@ -1,10 +1,10 @@
 <?php
 $browser = $HTTP_SERVER_VARS['HTTP_USER_AGENT'];
-		if(strpos($browser, "EVE-IGB")>0)
-		{
-$ingame = 1;
+if(strpos($browser, "EVE-IGB")>0)
+{
+	$ingame = 1;
 }else{
-$ingame = 0;
+	$ingame = 0;
 }
 MySQL_CONNECT("localhost","Username","Password");
 MySQL_SELECT_DB("DataBase");
@@ -80,9 +80,9 @@ if($phase == 3)
 
 if($phase == 1 || $phase == 3)
 {
-$result = MySQL_QUERY("SELECT * FROM pr_counter");
-$array = MySQL_FETCH_ARRAY($result);
-$count = $array["counter"];
+	$result = MySQL_QUERY("SELECT * FROM pr_counter");
+	$array = MySQL_FETCH_ARRAY($result);
+	$count = $array["counter"];
 	$introduction = "Fill out the form below to find out what you are worth. It’s completely free, and your API key will not be stored at all.<P>
 		<FORM METHOD=POST><TABLE STYLE=\"width:70%;\">
 		<TR><TD STYLE=\"width:30%; font-family:verdana; font-size:11px; background-color:#2c2c38; color:#ffffff;\">
@@ -96,19 +96,19 @@ $count = $array["counter"];
 		<A target=_BLANK href=http://www.eveonline.com/api/default.asp>http://www.eveonline.com/api/default.asp</A>
 		</TD></TR>\n
 		</TABLE>Already appraised ".$count." characters!<BR>";
-		$query = "SELECT COUNT(*) AS mycount FROM pr_latest";
-		$result = MySQL_QUERY($query);
-		$arr_latest = MySQL_FETCH_ASSOC($result);
-		$unique = $arr_latest['mycount'];
-		$introduction .= $unique." unique Character ID's in the database.<P>";
-		$introduction .= "<B>Latest 10 mugshots appraised:</B><BR>";
+	$query = "SELECT COUNT(*) AS mycount FROM pr_latest";
+	$result = MySQL_QUERY($query);
+	$arr_latest = MySQL_FETCH_ASSOC($result);
+	$unique = $arr_latest['mycount'];
+	$introduction .= $unique." unique Character ID's in the database.<P>";
+	$introduction .= "<B>Latest 10 mugshots appraised:</B><BR>";
 
-		$query = "SELECT * FROM pr_latest ORDER BY latest_timestamp DESC LIMIT 10";
-		$result = MySQL_QUERY($query);
-		while($arr_latest = MySQL_FETCH_ARRAY($result))
-		{
-			$introduction.="<img style=\"border:solid white 1px;\" src=\"http://img.eve.is/serv.asp?s=64&c=".$arr_latest["latest_ID"]."\">";
-		}
+	$query = "SELECT * FROM pr_latest ORDER BY latest_timestamp DESC LIMIT 10";
+	$result = MySQL_QUERY($query);
+	while($arr_latest = MySQL_FETCH_ARRAY($result))
+	{
+		$introduction.="<img style=\"border:solid white 1px;\" src=\"http://img.eve.is/serv.asp?s=64&c=".$arr_latest["latest_ID"]."\">";
+	}
 }
 if($phase == 2)
 {
@@ -334,7 +334,7 @@ if($phase == 1 || $phase == 3)
 						$arr_rank = MySQL_FETCH_ARRAY($res2);
 						if(isset($arr_rank["ranklevel_level"]))
 						{
-						$level = $arr_rank["ranklevel_level"];
+							$level = $arr_rank["ranklevel_level"];
 						}
 						if($ingame)
 						{

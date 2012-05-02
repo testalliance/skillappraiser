@@ -1,107 +1,107 @@
 <?php
 $browser = $HTTP_SERVER_VARS['HTTP_USER_AGENT'];
-		if(strpos($browser, "EVE-IGB")>0)
-		{
-$ingame = 1;
+if(strpos($browser, "EVE-IGB")>0)
+{
+	$ingame = 1;
 }else{
-$ingame = 0;
+	$ingame = 0;
 }
 MySQL_CONNECT("localhost","Username","Password");
 MySQL_SELECT_DB("DataBase");
 
 if(isset($_POST["test"]))
 {
-if(substr($_POST["test"],0,strlen("http://eveboard.com/pilot/"))=="http://eveboard.com/pilot/")
-{
-$contents = file ( $_POST["test"]);
-$spnext = 0;
-$secnext = 0;
-$implantpart = 0;
-foreach($contents as $line)
-{
-if($spnext == 1)
-{
-$tmp = substr($line,47);
-$end = strpos($tmp," of");
-$sp = substr($tmp,0,$end);
-$sp = str_replace(",","",$sp);
-//print($name.": ".$sp."<BR>");
-$result = MySQL_QUERY("SELECT * FROM pr_skills WHERE skill_name = '".$name."'");
-$array = MySQL_FETCH_ARRAY($result);
-$ID = $array["skill_ID"];
-$skill[$ID] = $sp;
-//print($ID.": ".$sp."<BR>");
-$spnext = 0;
-}
-if(strpos($line, "http://avatars.eve-search.com/")>0 && (!isset($charid) || empty($charid)))
-{
-$start = strpos($line,"http://avatars.eve-search.com/");
-$tmp = substr($line,$start+41);
-$end = strpos($tmp,"&amp;");
-$charid = substr($tmp,0,$end);
-}
-if(strpos($line, "height=\"20\" colspan=\"2\" align=\"left\" bgcolor=\"#292929\" class=\"title\">")>0)
-{
-$start = strpos($line,">");
-$tmp = substr($line,$start+1);
-$end = strpos($tmp,"<");
-$charname = substr($tmp,0,$end);
+	if(substr($_POST["test"],0,strlen("http://eveboard.com/pilot/"))=="http://eveboard.com/pilot/")
+	{
+		$contents = file ( $_POST["test"]);
+		$spnext = 0;
+		$secnext = 0;
+		$implantpart = 0;
+		foreach($contents as $line)
+		{
+			if($spnext == 1)
+			{
+				$tmp = substr($line,47);
+				$end = strpos($tmp," of");
+				$sp = substr($tmp,0,$end);
+				$sp = str_replace(",","",$sp);
+				//print($name.": ".$sp."<BR>");
+				$result = MySQL_QUERY("SELECT * FROM pr_skills WHERE skill_name = '".$name."'");
+				$array = MySQL_FETCH_ARRAY($result);
+				$ID = $array["skill_ID"];
+				$skill[$ID] = $sp;
+				//print($ID.": ".$sp."<BR>");
+				$spnext = 0;
+			}
+			if(strpos($line, "http://avatars.eve-search.com/")>0 && (!isset($charid) || empty($charid)))
+			{
+				$start = strpos($line,"http://avatars.eve-search.com/");
+				$tmp = substr($line,$start+41);
+				$end = strpos($tmp,"&amp;");
+				$charid = substr($tmp,0,$end);
+			}
+			if(strpos($line, "height=\"20\" colspan=\"2\" align=\"left\" bgcolor=\"#292929\" class=\"title\">")>0)
+			{
+				$start = strpos($line,">");
+				$tmp = substr($line,$start+1);
+				$end = strpos($tmp,"<");
+				$charname = substr($tmp,0,$end);
 
-}
-if(strpos($line, "<td height=\"20\" class=\"dotted\" style=\"\">")>0)
-{
-$tmp = substr($line,70);
-$end = strpos($tmp," /");
-$name = substr($tmp,0,$end);
-$spnext = 1;
-}
-if(strpos($line, "<strong>Implants</strong>")>0)
-{
-$implantpart = 1;
-}
-if($implantpart == 1)
-{
-if(strpos($line, "align=\"left\" bgcolor=\"#000000\" class=\"size10\">")>0)
-{
-$start = strpos($line,">");
-$tmp = substr($line,$start+1);
-$end = strpos($tmp,"(");
-$implantname = substr($tmp,0,$end);
-if(!empty($implantname))
-{
-$implantlist[$implantamount]=$implantname;
-//print("<HR>".$implantname."<HR>");
-$implantamount++;
-}
-}
-}
-if(strpos($line, "<strong>Training</strong>")>0)
-{
-$implantpart = 0;
-}
+			}
+			if(strpos($line, "<td height=\"20\" class=\"dotted\" style=\"\">")>0)
+			{
+				$tmp = substr($line,70);
+				$end = strpos($tmp," /");
+				$name = substr($tmp,0,$end);
+				$spnext = 1;
+			}
+			if(strpos($line, "<strong>Implants</strong>")>0)
+			{
+				$implantpart = 1;
+			}
+			if($implantpart == 1)
+			{
+				if(strpos($line, "align=\"left\" bgcolor=\"#000000\" class=\"size10\">")>0)
+				{
+					$start = strpos($line,">");
+					$tmp = substr($line,$start+1);
+					$end = strpos($tmp,"(");
+					$implantname = substr($tmp,0,$end);
+					if(!empty($implantname))
+					{
+						$implantlist[$implantamount]=$implantname;
+						//print("<HR>".$implantname."<HR>");
+						$implantamount++;
+					}
+				}
+			}
+			if(strpos($line, "<strong>Training</strong>")>0)
+			{
+				$implantpart = 0;
+			}
 
-if(strpos($line, "<td height=\"20\" class=\"dotted\" style=\"\"><span style=\"color: #FFCC00;\">")>0)
-{
-$tmp = substr($line,100);
-$end = strpos($tmp," /");
-$name = substr($tmp,0,$end);
-$spnext = 1;
-}
-if($secnext == 1)
-{
-$tmp = substr($line,53);
-$end = strpos($tmp,"<");
-$secstatus = substr($tmp,0,$end);
-$secnext = 0;
-}
-if(strpos($line, "Security Status")>0)
-{
-$secnext = 1;
-}
-}
-}else{
-unset($_POST["test"]);
-}
+			if(strpos($line, "<td height=\"20\" class=\"dotted\" style=\"\"><span style=\"color: #FFCC00;\">")>0)
+			{
+				$tmp = substr($line,100);
+				$end = strpos($tmp," /");
+				$name = substr($tmp,0,$end);
+				$spnext = 1;
+			}
+			if($secnext == 1)
+			{
+				$tmp = substr($line,53);
+				$end = strpos($tmp,"<");
+				$secstatus = substr($tmp,0,$end);
+				$secnext = 0;
+			}
+			if(strpos($line, "Security Status")>0)
+			{
+				$secnext = 1;
+			}
+		}
+	}else{
+		unset($_POST["test"]);
+	}
 }
 
 //First check for POST and GET values
@@ -118,7 +118,7 @@ if(isset($_POST["userID"]))
 }
 if(isset($_POST["test"]))
 {
-$phase = 3;
+	$phase = 3;
 }
 if($phase == 1)
 {
@@ -173,9 +173,9 @@ if($phase == 3)
 
 if($phase == 1 || $phase == 3)
 {
-$result = MySQL_QUERY("SELECT * FROM pr_counter");
-$array = MySQL_FETCH_ARRAY($result);
-$count = $array["counter"];
+	$result = MySQL_QUERY("SELECT * FROM pr_counter");
+	$array = MySQL_FETCH_ARRAY($result);
+	$count = $array["counter"];
 	$introduction = "Fill out the form below to find out what you are worth. It’s completely free, and your API key will not be stored at all.<P>
 		<FORM METHOD=POST><TABLE STYLE=\"width:70%;\">
 		<TR><TD STYLE=\"width:30%; font-family:verdana; font-size:11px; background-color:#2c2c38; color:#ffffff;\">
@@ -189,56 +189,56 @@ $count = $array["counter"];
 		<A target=_BLANK href=http://www.eveonline.com/api/default.asp>http://www.eveonline.com/api/default.asp</A>
 		</TD></TR>\n
 		</TABLE>Already appraised ".$count." characters!<BR>";
-		$query = "SELECT COUNT(*) AS mycount FROM pr_latest";
-		$result = MySQL_QUERY($query);
-		$arr_latest = MySQL_FETCH_ASSOC($result);
-		$unique = $arr_latest['mycount'];
-		$introduction .= $unique." unique Character ID's in the database.<P>";
-		$introduction .= "TOP 3 MOST VALUE FOR ISK:<BR>";
-		$introduction .= "<TABLE><TR>";
-		$query = "SELECT * FROM pr_latest ORDER BY latest_avgvalue DESC LIMIT 3";
-		$result = MySQL_QUERY($query);
-		$rank = 1;
-		WHILE($arr_latest = MySQL_FETCH_ARRAY($result))
+	$query = "SELECT COUNT(*) AS mycount FROM pr_latest";
+	$result = MySQL_QUERY($query);
+	$arr_latest = MySQL_FETCH_ASSOC($result);
+	$unique = $arr_latest['mycount'];
+	$introduction .= $unique." unique Character ID's in the database.<P>";
+	$introduction .= "TOP 3 MOST VALUE FOR ISK:<BR>";
+	$introduction .= "<TABLE><TR>";
+	$query = "SELECT * FROM pr_latest ORDER BY latest_avgvalue DESC LIMIT 3";
+	$result = MySQL_QUERY($query);
+	$rank = 1;
+	WHILE($arr_latest = MySQL_FETCH_ARRAY($result))
+	{
+		if($arr_latest["latest_name"]=="")
 		{
-			if($arr_latest["latest_name"]=="")
+			$idtoname = file ( "http://api.eve-online.com/eve/CharacterName.xml.aspx?ids=".$arr_latest["latest_ID"] );
+			foreach($idtoname as $line)
 			{
-				$idtoname = file ( "http://api.eve-online.com/eve/CharacterName.xml.aspx?ids=".$arr_latest["latest_ID"] );
-				foreach($idtoname as $line)
+				if(strpos($line, "<row ")>0)
 				{
-					if(strpos($line, "<row ")>0)
-					{
 
-						$start = strpos($line,"name=");
-						$tmp = substr($line,$start+6);
-						$end = strpos($tmp, "\"");
-						$newcharname = substr($tmp,0,$end);
-						MySQL_QUERY("UPDATE pr_latest SET latest_name = '".$newcharname."' WHERE latest_ID = '".$arr_latest["latest_ID"]."'");
-						$arr_latest["latest_name"] = $newcharname;
-						break;
-					}
+					$start = strpos($line,"name=");
+					$tmp = substr($line,$start+6);
+					$end = strpos($tmp, "\"");
+					$newcharname = substr($tmp,0,$end);
+					MySQL_QUERY("UPDATE pr_latest SET latest_name = '".$newcharname."' WHERE latest_ID = '".$arr_latest["latest_ID"]."'");
+					$arr_latest["latest_name"] = $newcharname;
+					break;
 				}
 			}
-			$topcharname[$rank] = $arr_latest["latest_name"];
-			$topcharid[$rank] = $arr_latest["latest_ID"];
-			$topcharvalue[$rank] = $arr_latest["latest_avgvalue"];
-			$rank++;
 		}
-		$introduction .= "<TD><CENTER><img width=75 src=\"http://image.eveonline.com/Character/".$topcharid[2]."_256.jpg\"><BR>2. ".$topcharname[2]."<BR>(".$topcharvalue[2]." ISK PER SP)</CENTER></TD>";
-		$introduction .= "<TD><CENTER><img width=100 src=\"http://image.eveonline.com/Character/".$topcharid[1]."_256.jpg\"><BR>1. ".$topcharname[1]."<BR>(".$topcharvalue[1]." ISK PER SP)</CENTER></TD>";
-		$introduction .= "<TD><CENTER><img width=50 src=\"http://image.eveonline.com/Character/".$topcharid[3]."_256.jpg\"><BR>3. ".$topcharname[3]."<BR>(".$topcharvalue[3]." ISK PER SP)</CENTER></TD>";
-		$introduction .= "</TR></TABLE>";
-		$introduction .= "<P><B>Latest 10 mugshots appraised:</B><BR>";
+		$topcharname[$rank] = $arr_latest["latest_name"];
+		$topcharid[$rank] = $arr_latest["latest_ID"];
+		$topcharvalue[$rank] = $arr_latest["latest_avgvalue"];
+		$rank++;
+	}
+	$introduction .= "<TD><CENTER><img width=75 src=\"http://image.eveonline.com/Character/".$topcharid[2]."_256.jpg\"><BR>2. ".$topcharname[2]."<BR>(".$topcharvalue[2]." ISK PER SP)</CENTER></TD>";
+	$introduction .= "<TD><CENTER><img width=100 src=\"http://image.eveonline.com/Character/".$topcharid[1]."_256.jpg\"><BR>1. ".$topcharname[1]."<BR>(".$topcharvalue[1]." ISK PER SP)</CENTER></TD>";
+	$introduction .= "<TD><CENTER><img width=50 src=\"http://image.eveonline.com/Character/".$topcharid[3]."_256.jpg\"><BR>3. ".$topcharname[3]."<BR>(".$topcharvalue[3]." ISK PER SP)</CENTER></TD>";
+	$introduction .= "</TR></TABLE>";
+	$introduction .= "<P><B>Latest 10 mugshots appraised:</B><BR>";
 
-		$query = "SELECT * FROM pr_latest ORDER BY latest_timestamp DESC LIMIT 10";
-		$result = MySQL_QUERY($query);
-		while($arr_latest = MySQL_FETCH_ARRAY($result))
-		{
-			$introduction.="<img style=\"border:solid white 1px;\" src=\"http://image.eveonline.com/Character/".$arr_latest["latest_ID"]."_64.jpg\">";
-		}
-		$introduction.="<P><b>EVEBOARD appraiser</B><P>";
-		$introduction.="You can now appraise characters from EVEBoard. Please include the FULL URL in the next form:<P><FORM METHOD=POST>";
-		$introduction.="URL: <INPUT TYPE=text NAME=test><INPUT TYPE=SUBMIT VALUE='Appraise him!'></FORM>";
+	$query = "SELECT * FROM pr_latest ORDER BY latest_timestamp DESC LIMIT 10";
+	$result = MySQL_QUERY($query);
+	while($arr_latest = MySQL_FETCH_ARRAY($result))
+	{
+		$introduction.="<img style=\"border:solid white 1px;\" src=\"http://image.eveonline.com/Character/".$arr_latest["latest_ID"]."_64.jpg\">";
+	}
+	$introduction.="<P><b>EVEBOARD appraiser</B><P>";
+	$introduction.="You can now appraise characters from EVEBoard. Please include the FULL URL in the next form:<P><FORM METHOD=POST>";
+	$introduction.="URL: <INPUT TYPE=text NAME=test><INPUT TYPE=SUBMIT VALUE='Appraise him!'></FORM>";
 }
 if($phase == 2)
 {
@@ -281,41 +281,41 @@ if($phase == 3)
 }
 if($phase == 1 || $phase == 3)
 {
-if(!isset($_POST["test"]))
-{	foreach($contents2 as $line)
-	{
-		if(strpos($line, "<securityStatus>")>0)
+	if(!isset($_POST["test"]))
+	{	foreach($contents2 as $line)
 		{
-			$tmp = substr($line,20);
-			$end = strpos($tmp,"<");
-			$secstatus = substr($tmp,0,$end);
-			break;
+			if(strpos($line, "<securityStatus>")>0)
+			{
+				$tmp = substr($line,20);
+				$end = strpos($tmp,"<");
+				$secstatus = substr($tmp,0,$end);
+				break;
+			}
 		}
-	}
 
-	foreach($contents as $line)
-	{
-		if(strpos($line, "<augmentatorName>")>0)
+		foreach($contents as $line)
 		{
-			$tmp = substr($line,25);
-			$end = strpos($tmp,"<");
-			$implant = substr($tmp,0,$end);
-			$implantlist[$implantamount] = $implant;
-			$implantamount++;
-		}
-		if(strpos($line, "row typeID=")>0)
-		{
-			$tmp = substr($line,19);
-			$end = strpos($tmp,"\"");
-			$ID = substr($tmp,0,$end);
-			$start = strpos($line,"skillpoints=");
-			$tmp = substr($line,$start+13);
-			$end = strpos($tmp, "\"");
-			$points = substr($tmp,0,$end);
-			$skill[$ID] = $points;
+			if(strpos($line, "<augmentatorName>")>0)
+			{
+				$tmp = substr($line,25);
+				$end = strpos($tmp,"<");
+				$implant = substr($tmp,0,$end);
+				$implantlist[$implantamount] = $implant;
+				$implantamount++;
+			}
+			if(strpos($line, "row typeID=")>0)
+			{
+				$tmp = substr($line,19);
+				$end = strpos($tmp,"\"");
+				$ID = substr($tmp,0,$end);
+				$start = strpos($line,"skillpoints=");
+				$tmp = substr($line,$start+13);
+				$end = strpos($tmp, "\"");
+				$points = substr($tmp,0,$end);
+				$skill[$ID] = $points;
+			}
 		}
 	}
-}
 	foreach($skill as $id => $points)
 	{
 		$res_skills = MySQL_QUERY("SELECT * FROM pr_skills WHERE skill_ID = ".$id."");
@@ -478,7 +478,7 @@ if(!isset($_POST["test"]))
 						$arr_rank = MySQL_FETCH_ARRAY($res2);
 						if(isset($arr_rank["ranklevel_level"]))
 						{
-						$level = $arr_rank["ranklevel_level"];
+							$level = $arr_rank["ranklevel_level"];
 						}
 						if($ingame)
 						{
@@ -566,23 +566,23 @@ if(!isset($_POST["test"]))
 		$indatabase = MySQL_NUM_ROWS($res_latestcheck);
 		if(!$indatabase)
 		{
-		if($totsp > 1000000)
-		{
-			$query = "INSERT INTO pr_latest(latest_ID, latest_timestamp, latest_avgvalue)VALUES(".$charid.",".time().",'".$avgspvalue."')";
-			MySQL_QUERY($query);
+			if($totsp > 1000000)
+			{
+				$query = "INSERT INTO pr_latest(latest_ID, latest_timestamp, latest_avgvalue)VALUES(".$charid.",".time().",'".$avgspvalue."')";
+				MySQL_QUERY($query);
+			}else{
+				$query = "INSERT INTO pr_latest(latest_ID, latest_timestamp, latest_avgvalue)VALUES(".$charid.",".time().",'0')";
+				MySQL_QUERY($query);
+			}
 		}else{
-			$query = "INSERT INTO pr_latest(latest_ID, latest_timestamp, latest_avgvalue)VALUES(".$charid.",".time().",'0')";
-			MySQL_QUERY($query);
-		}
-		}else{
-		if($totsp > 1000000)
-		{
-			$query = "UPDATE pr_latest SET latest_timestamp = ".time().", latest_avgvalue = '".$avgspvalue."' WHERE latest_ID = '".$charid."'";
-			MySQL_QUERY($query);
-		}else{
-			$query = "UPDATE pr_latest SET latest_timestamp = ".time().", latest_avgvalue = '0' WHERE latest_ID = '".$charid."'";
-			MySQL_QUERY($query);
-		}
+			if($totsp > 1000000)
+			{
+				$query = "UPDATE pr_latest SET latest_timestamp = ".time().", latest_avgvalue = '".$avgspvalue."' WHERE latest_ID = '".$charid."'";
+				MySQL_QUERY($query);
+			}else{
+				$query = "UPDATE pr_latest SET latest_timestamp = ".time().", latest_avgvalue = '0' WHERE latest_ID = '".$charid."'";
+				MySQL_QUERY($query);
+			}
 		}
 	}
 	$skillbreakdown = "";
