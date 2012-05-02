@@ -10,6 +10,6 @@ Installation
 
 1. Copy to a web facing directory.
 2. Create and import the database included (in the SQL)
-3. Updated func.php with MySQL login details and database details
+3. Updated dbconfig.php with MySQL login details and database details
 
 ... and give it a go! 

@@ -1,7 +1,6 @@
 <?php
 $id = 1;
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
 
 $priceinfo = file("http://www.eve-database.com/?MGID=24&MGID2=27&MGID3=532");
 foreach($priceinfo as $line)

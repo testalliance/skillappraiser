@@ -1,6 +1,5 @@
 <?php
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
 
 $contents = file ( "http://api.eve-online.com/eve/CertificateTree.xml.aspx" );
 //print("<!--");

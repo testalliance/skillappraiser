@@ -1,6 +1,5 @@
 <?php
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
 
 for($rank = 1; $rank < 30; $rank++)
 {

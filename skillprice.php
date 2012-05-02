@@ -1,7 +1,7 @@
 <?php
 
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
+
 $result = MySQL_QUERY("SELECT * FROM pr_skills WHERE skill_price = 0");
 if($result > 0)
 {

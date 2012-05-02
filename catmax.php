@@ -1,6 +1,5 @@
 <?php
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
 
 $result = MySQL_QUERY("SELECT * FROM pr_categories");
 WHILE($arr_cats = MySQL_FETCH_ARRAY($result))

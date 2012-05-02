@@ -1,6 +1,5 @@
 <?
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
 
 MySQL_QUERY("UPDATE pr_implants SET implant_attribute = 3");
 MySQL_QUERY("UPDATE pr_implants SET implant_attribute = 1 WHERE implant_name LIKE '%Limited%'");

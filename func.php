@@ -1,8 +1,7 @@
 <?php
 
 SESSION_START();
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+require_once('dbconfig.php');
 
 function encode($string,$key) {
 	$key = sha1($key);

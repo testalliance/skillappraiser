@@ -6,8 +6,7 @@ if(strpos($browser, "EVE-IGB")>0)
 }else{
 	$ingame = 0;
 }
-MySQL_CONNECT("localhost","Username","Password");
-MySQL_SELECT_DB("DataBase");
+
 
 if(isset($_POST["test"]))
 {
