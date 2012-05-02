@@ -6,7 +6,7 @@ if(strpos($browser, "EVE-IGB")>0)
 }else{
 	$ingame = 0;
 }
-
+require_once('dbconfig.php');
 
 if(isset($_POST["test"]))
 {
