@@ -1,0 +1,6 @@
+Let player choose which skills he'd want his character to have.
+Supply some skill subsets, e.g. Learning skills to lvl 4 or 5 or Able to fly a Rapier.
+After API fill, enable the player to add skill subsets, delete their own, and flag subsets which are inappropriate or stupid
+Admin tool to disable certain APIs and delete all their skill subsets
+
+Feed the SP amounts into the original script somehow, and work out the price for the perfect character.
